@@ -6,7 +6,6 @@ export default function Home() {
     <AppLayout>
       Welcome to Project Management
       <div className="space-y-3">
-        
       </div>
     </AppLayout>
   );
