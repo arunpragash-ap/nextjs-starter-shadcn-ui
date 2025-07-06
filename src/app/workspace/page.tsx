@@ -7,7 +7,6 @@ export default function Workspace() {
     return (
         <AppLayout>
             <div className="flex flex-row-reverse">
-               
                 <WorkspaceModal />
             </div>
         </AppLayout>

@@ -54,7 +54,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader className="h-14 border-b flex items-center justify-center">
-            Logo here
+            Dark Angel
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}

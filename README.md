@@ -2,6 +2,20 @@
 
 A modern, customizable project management dashboard built with [Next.js](https://nextjs.org), [Radix UI](https://www.radix-ui.com/), and [Tailwind CSS](https://tailwindcss.com/).
 
+## Table of Contents
+
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the Development Server](#running-the-development-server)
+- [Scripts](#scripts)
+- [Project Structure](#project-structure)
+- [Toast Notifications](#toast-notifications)
+- [Customization](#customization)
+- [Deployment](#deployment)
+- [License](#license)
+
 ## Features
 
 - **Dashboard Layout:** Responsive sidebar, header, and content area for scalable project management UIs.
@@ -55,6 +69,35 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 - `src/contexts/` – Theme and other React context providers
 - `src/hooks/` – Custom React hooks
 - `src/lib/` – Utility functions
+
+## Toast Notifications
+
+The project includes a custom toast utility for displaying notifications. Here's how to use it:
+
+```tsx
+import { useCustomToast } from '@/src/lib/toast-util';
+
+export default function MyComponent() {
+  const showToast = useCustomToast();
+
+  const handleClick = () => {
+    showToast({
+      title: 'Success!',
+      description: 'Your action was successful.',
+      level: 'success', // 'success' | 'error' | 'warning' (default: 'success')
+    });
+  };
+
+  return <button onClick={handleClick}>Show Toast</button>;
+}
+```
+
+### Toast Options
+- `title` (string): Main message (required)
+- `description` (string): Optional subtext
+- `level` ('success' | 'error' | 'warning'): Toast type (default: 'success')
+
+The toast automatically adapts to the current theme (light/dark).
 
 ## Customization
 
