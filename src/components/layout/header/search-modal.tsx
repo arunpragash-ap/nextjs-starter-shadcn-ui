@@ -88,7 +88,7 @@ const searchData: SearchItem[] = [
     }
 ];
 
-export function SearchDialog() {
+export function SearchDialog({ className }: { className?: string }) {
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -166,7 +166,9 @@ export function SearchDialog() {
     useEffect(() => {
         if (open && inputRef.current) {
             setTimeout(() => {
-                inputRef.current && inputRef.current.focus();
+                if (inputRef.current) {
+                    inputRef.current.focus();
+                }
             }, 100);
         }
     }, [open]);
@@ -183,7 +185,7 @@ export function SearchDialog() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <div className="relative w-full max-w-sm">
+                <div className={`relative w-full max-w-sm ${className || ''}`}>
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
                         type="text"
@@ -238,7 +240,7 @@ export function SearchDialog() {
                                         </h3>
                                     </div>
                                     <div>
-                                        {items.map((item, index) => {
+                                        {items.map((item) => {
                                             const globalIndex = filteredResults.findIndex(r => r.id === item.id);
                                             const isSelected = globalIndex === selectedIndex;
                                             

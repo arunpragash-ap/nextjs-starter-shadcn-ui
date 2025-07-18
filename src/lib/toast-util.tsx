@@ -2,7 +2,6 @@
 'use client';
 
 import { toast } from 'sonner';
-import { useTheme } from 'next-themes';
 
 type ToastLevel = 'success' | 'error' | 'warning';
 
@@ -29,7 +28,7 @@ const darkThemeStyles = {
 };
 
 export function useCustomToast() {
-  const { theme } = useTheme();
+  const theme  = "dark";
 
   return ({ title, description, level = 'success' }: ToastOptions) => {
     const color = borderColors[level];

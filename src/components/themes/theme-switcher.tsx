@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useColorTheme } from "@/contexts/theme-context/color-theme-provider";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { setColorTheme } from "@/store/theme/slice";
 import {
   Select,
   SelectContent,
@@ -12,7 +13,8 @@ import {
 } from "@/components/ui/select";
 
 export default function ThemeSwitcher() {
-  const { colorTheme, setColorTheme } = useColorTheme();
+  const dispatch = useAppDispatch();
+  const colorTheme = useAppSelector((state) => state.theme.colorTheme);
 
   const themes = [
     { label: "Orange", value: "orange-theme" },
@@ -25,8 +27,12 @@ export default function ThemeSwitcher() {
     { label: "Default", value: "default-theme" },
   ];
 
+  const handleThemeChange = (theme: string) => {
+    dispatch(setColorTheme(theme));
+  };
+
   return (
-    <Select value={colorTheme} onValueChange={setColorTheme}>
+    <Select value={colorTheme} onValueChange={handleThemeChange}>
       <SelectTrigger className="w-[200px]">
         <SelectValue placeholder="Select theme" />
       </SelectTrigger>

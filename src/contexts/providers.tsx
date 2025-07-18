@@ -1,26 +1,22 @@
-import { ColorThemeProvider } from '@/contexts/theme-context/color-theme-provider'
-import { ThemeProvider } from './theme-context/theme-provider';
-import { Toaster } from 'sonner';
+// providers.tsx
+"use client";
+import { Toaster } from "sonner";
+import { ConfirmDialogProvider } from "@/components/ui/ConfirmDialog";
+import { Provider } from "react-redux";
+import { store } from "@/store";
+import AuthGuard from "@/lib/auth-guard";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ColorThemeProvider>
-
-<ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-
-      {children}
-      <Toaster 
-          position="top-right"
-          richColors
-          expand={false}
-          visibleToasts={5}
-        />
-          </ThemeProvider>
-    </ColorThemeProvider>
+    <Provider store={store}>
+      {/* <ColorThemeProvider> */}
+        <ConfirmDialogProvider>
+          <AuthGuard>
+            {children}
+            <Toaster />
+          </AuthGuard>
+        </ConfirmDialogProvider>
+      {/* </ColorThemeProvider> */}
+    </Provider>
   );
 }

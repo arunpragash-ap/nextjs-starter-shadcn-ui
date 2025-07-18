@@ -2,10 +2,54 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useState } from "react";
+import { authService } from "@/services";
+import { useCustomToast } from "@/lib/toast-util";
+import { useRouter } from "next/navigation";
+import { formatApiErrorMessage } from "@/lib/utils";
 
 export default function LoginForm() {
+    const [identifier, setIdentifier] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const toast = useCustomToast();
+    const router = useRouter();
+
+    // Email validation function
+    const isValidEmail = (email: string): boolean => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const res = await authService.loginWithMfaSupport({ identifier, password });
+            if (res.accessToken && res.refreshToken) {
+                localStorage.setItem("token", res.accessToken);
+                localStorage.setItem("refreshToken", res.refreshToken);
+                toast({ title: "Login successful!", level: "success" });
+                router.push("/dashboard");
+            } else if (res.mfaRequired && res.mfaToken) {
+                toast({ title: "MFA required", description: "Please enter your MFA code.", level: "warning" });
+                router.push(`/mfa-verify?mfaToken=${encodeURIComponent(res.mfaToken)}`);
+            } else {
+                toast({ title: "Unexpected response", description: "Please try again.", level: "error" });
+            }
+        } catch (err: unknown) {
+            toast({
+                title: "Login failed",
+                description: formatApiErrorMessage(err),
+                level: "error",
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <form className="p-6 md:p-8 ">
+        <form className="p-6 md:p-8 " onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
                     <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -14,28 +58,30 @@ export default function LoginForm() {
                     </p>
                 </div>
                 <div className="grid gap-3">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="identifier">Email or Username</Label>
                     <Input
-                        id="email"
-                        type="email"
-                        placeholder="m@example.com"
+                        id="identifier"
+                        type="text"
+                        placeholder="m@example.com or username"
                         required
+                        value={identifier}
+                        onChange={e => setIdentifier(e.target.value)}
                     />
                 </div>
                 <div className="grid gap-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-between">
                         <Label htmlFor="password">Password</Label>
-                        <a
-                            href="#"
-                            className="ml-auto text-sm underline-offset-2 hover:underline"
+                        <Link 
+                            href={`/forgot-password${isValidEmail(identifier) ? `?email=${encodeURIComponent(identifier)}` : ''}`} 
+                            className="text-xs text-primary hover:underline"
                         >
-                            Forgot your password?
-                        </a>
+                            Forgot Password?
+                        </Link>
                     </div>
-                    <Input id="password" type="password" required />
+                    <Input id="password" type="password" required value={password} onChange={e => setPassword(e.target.value)} />
                 </div>
-                <Button type="submit" className="w-full">
-                    Login
+                <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Logging in..." : "Login"}
                 </Button>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                     <span className="bg-card text-muted-foreground relative z-10 px-2">

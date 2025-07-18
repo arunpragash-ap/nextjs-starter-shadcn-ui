@@ -1,41 +1,54 @@
-import { cn } from "@/lib/utils";
+'use client';
 import { Card, CardContent } from "@/components/ui/card";
 import LoginForm from "./login-form";
 import SignupForm from "./signup-form";
+import ForgotPassword from "./forgot-password";
+import VerifyEmail from "./verify-email";
+import MfaVerify from "./mfa-verify";
+import ResetPassword from "./reset-password";
 import { notFound } from "next/navigation";
+import Image from "next/image";
+import { use } from "react";
 
 interface AuthPageProps {
-  params: {
+  params: Promise<{
     auth: string;
-  };
-  className?: string;
+  }>;
 }
 
 export default function AuthPage({
   params,
-  className,
 }: AuthPageProps) {
-  const { auth } = params;
+  const { auth } = use(params);
 
   // Check if the auth parameter is valid
-  if (auth !== "login" && auth !== "signup") {
+  const validAuth = ["login", "signup", "forgot-password", "verify-email", "mfa-verify", "reset-password"];
+  if (!validAuth.includes(auth)) {
     notFound();
   }
 
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-6xl">
-        <div className={cn("flex flex-col gap-6", className)}>
+        <div className="flex flex-col gap-6">
           <Card className="overflow-hidden p-0">
             <CardContent className="grid p-0 md:grid-cols-2">
-              {auth === "login" ? <LoginForm /> : <SignupForm />}
-              <div className="relative hidden md:block ">
-                <img
+            <div className="relative hidden md:block ">
+                <Image
+                  width={100}
+                  height={100}
                   src="/assets/login_cropped.png"
                   alt="Login Image"
                   className="absolute inset-0 h-full w-full object-cover"
                 />
               </div>
+              {auth === "login" && <LoginForm />}
+              {auth === "signup" && <SignupForm />}
+              {auth === "forgot-password" && <ForgotPassword />}
+              {auth === "verify-email" && <VerifyEmail />}
+              {auth === "mfa-verify" && <MfaVerify />}
+              {auth === "reset-password" && <ResetPassword />}
+              
             </CardContent>
           </Card>
           <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">

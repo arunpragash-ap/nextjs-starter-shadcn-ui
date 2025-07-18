@@ -2,10 +2,44 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useState } from "react";
+import { authService } from "@/services";
+import { useCustomToast } from "@/lib/toast-util";
+import { useRouter } from "next/navigation";
+import { formatApiErrorMessage } from "@/lib/utils";
 
 export default function SignupForm() {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const toast = useCustomToast();
+    const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await authService.registerWithCode({ username, email, password });
+            toast({ 
+                title: "Registration successful!", 
+                description: "Please check your email to verify your account.", 
+                level: "success" 
+            });
+            router.push("/verify-email?email=" + encodeURIComponent(email));
+        } catch (err: unknown) {
+            toast({
+                title: "Registration failed",
+                description: formatApiErrorMessage(err),
+                level: "error",
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <form className="p-6 md:p-8 ">
+        <form className="p-6 md:p-8 " onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
                     <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -14,28 +48,33 @@ export default function SignupForm() {
                     </p>
                 </div>
                 <div className="grid gap-3">
+                    <Label htmlFor="username">Username</Label>
+                    <Input
+                        id="username"
+                        type="text"
+                        placeholder="your username"
+                        required
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                    />
+                </div>
+                <div className="grid gap-3">
                     <Label htmlFor="email">Email</Label>
                     <Input
                         id="email"
                         type="email"
                         placeholder="m@example.com"
                         required
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
                     />
                 </div>
                 <div className="grid gap-3">
-                    <div className="flex items-center">
-                        <Label htmlFor="password">Password</Label>
-                        <a
-                            href="#"
-                            className="ml-auto text-sm underline-offset-2 hover:underline"
-                        >
-                            Forgot your password?
-                        </a>
-                    </div>
-                    <Input id="password" type="password" required />
+                    <Label htmlFor="password">Password</Label>
+                    <Input id="password" type="password" required value={password} onChange={e => setPassword(e.target.value)} />
                 </div>
-                <Button type="submit" className="w-full">
-                    Login
+                <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Registering..." : "Register"}
                 </Button>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                     <span className="bg-card text-muted-foreground relative z-10 px-2">
