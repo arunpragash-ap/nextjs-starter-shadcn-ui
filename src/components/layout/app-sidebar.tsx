@@ -17,28 +17,9 @@ import {
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
+import { sidebarMenuList } from "@/constants/app-sidebar.constants"
 
-// This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Masters",
-      url: "#",
-      items: [
-        {
-          title: "Dashboard",
-          url: "/dashboard",
-          activePatterns: ["/dashboard"],
-        },
-        {
-          title: "Analytics",
-          url: "#",
-          activePatterns: ["/analytics"],
-        },
-      ],
-    }
-  ],
-}
+
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
@@ -49,7 +30,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
+        {sidebarMenuList.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>

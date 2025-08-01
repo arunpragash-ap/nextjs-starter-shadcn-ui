@@ -1,7 +1,7 @@
 'use client';
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import AppHeader from "./header/app-header";
+import AppHeader from "./app-header/app-header";
 import { Card } from "../ui/card";
 import { useAppSelector } from "@/store/hooks";
 

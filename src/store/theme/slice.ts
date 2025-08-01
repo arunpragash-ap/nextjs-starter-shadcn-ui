@@ -8,21 +8,14 @@ interface ThemeState {
 // Get initial theme from localStorage if available
 const getInitialState = (): ThemeState => {
   if (typeof window !== 'undefined') {
-    // For SSR compatibility
-    try {
+   
       const storedColorTheme = localStorage.getItem('colorTheme') || 'orange-theme';
       const storedMode = localStorage.getItem('themeMode') as ThemeState['mode'] || 'dark';
       return {
         colorTheme: storedColorTheme,
         mode: storedMode,
       };
-    } catch (e) {
-      // Fallback if localStorage is not available
-      return {
-        colorTheme: 'orange-theme',
-        mode: 'dark',
-      };
-    }
+   
   }
 
   // Default for SSR

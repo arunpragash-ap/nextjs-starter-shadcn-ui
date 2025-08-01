@@ -1,14 +1,15 @@
 'use client';
 import { Card, CardContent } from "@/components/ui/card";
-import LoginForm from "./login-form";
-import SignupForm from "./signup-form";
-import ForgotPassword from "./forgot-password";
-import VerifyEmail from "./verify-email";
-import MfaVerify from "./mfa-verify";
-import ResetPassword from "./reset-password";
+import LoginForm from "../../components/pages/auth/login/login-form";
+import SignupForm from "../../components/pages/auth/signup/signup-form";
+import ForgotPassword from "../../components/pages/auth/password/forgot-password";
+import VerifyEmail from "../../components/pages/auth/verify-email/verify-email";
+import MfaVerify from "../../components/pages/auth/mfa/mfa-verify";
+import ResetPassword from "../../components/pages/auth/password/reset-password";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { use } from "react";
+import Link from "next/link";
 
 interface AuthPageProps {
   params: Promise<{
@@ -52,8 +53,8 @@ export default function AuthPage({
             </CardContent>
           </Card>
           <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-            By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-            and <a href="#">Privacy Policy</a>.
+            By clicking continue, you agree to our <Link href="#">Terms of Service</Link>{" "}
+            and <Link href="#">Privacy Policy</Link>.
           </div>
         </div>
       </div>
