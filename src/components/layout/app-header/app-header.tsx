@@ -35,7 +35,7 @@ const AppHeader = () => {
   return (
     <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b px-4">
       <div className="flex items-center">
-        <SidebarTrigger className="-ml-1" />
+        <SidebarTrigger className="-ml-1 " variant="secondary" />
         <Separator orientation="vertical" className="mx-2 h-4" />
         <Breadcrumbs segments={segments} allCrumbs={allCrumbs} />
       </div>

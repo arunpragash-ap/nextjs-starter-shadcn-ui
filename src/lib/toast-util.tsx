@@ -19,31 +19,35 @@ const borderColors: Record<ToastLevel, string> = {
 
 const lightThemeStyles = {
   background: '#ffffff',
-  color: '#0f172a', // Slate-900
+  titleColor: '#0f172a', // Slate-900
+  descriptionColor: '#334155', // Slate-700
 };
 
 const darkThemeStyles = {
   background: '#1e293b',
-  color: '#f8fafc',
+  titleColor: '#f8fafc', // Light
+  descriptionColor: '#cbd5e1', // Slate-300
 };
 
 export function useCustomToast() {
-  const theme  = "dark";
+  const theme = 'dark'; // Replace with your theme state if dynamic
 
   return ({ title, description, level = 'success' }: ToastOptions) => {
     const color = borderColors[level];
-
     const isDark = theme === 'dark';
-
     const themeStyles = isDark ? darkThemeStyles : lightThemeStyles;
 
     toast(title, {
-      description,
+      description: description ? (
+        <span style={{ color: themeStyles.descriptionColor }}>
+          {description}
+        </span>
+      ) : undefined,
       style: {
         marginTop: '60px',
         borderLeft: `6px solid ${color}`,
         background: themeStyles.background,
-        color: themeStyles.color,
+        color: themeStyles.titleColor,
       },
     });
   };

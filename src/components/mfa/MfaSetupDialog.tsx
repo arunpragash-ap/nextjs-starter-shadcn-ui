@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { mfaService } from "@/services";
 import { useCustomToast } from "@/lib/toast-util";
-import { formatApiErrorMessage } from "@/lib/utils";
+import { formatApiErrorMessage } from "@/lib/errors/format-api-errors";
 
 interface MfaSetupDialogProps {
   open: boolean;

@@ -13,7 +13,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <ConfirmDialogProvider>
           <AuthGuard>
             {children}
-            <Toaster />
+            <Toaster position="top-right"/>
           </AuthGuard>
         </ConfirmDialogProvider>
       {/* </ColorThemeProvider> */}

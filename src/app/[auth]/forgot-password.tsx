@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { authService } from "@/services";
 import { useCustomToast } from "@/lib/toast-util";
-import { formatApiErrorMessage } from "@/lib/utils";
+import { formatApiErrorMessage } from "@/lib/errors/format-api-errors";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
