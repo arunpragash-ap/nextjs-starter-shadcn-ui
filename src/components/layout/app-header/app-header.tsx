@@ -10,6 +10,7 @@ import breadcrumbConfig, {
 import { DesktopControls } from "./desktop-controls";
 import { MobileControls } from "./mobile-controls";
 import { Breadcrumbs } from "./breadcrumbs";
+import { SearchForm } from "../search-form";
 
 const AppHeader = () => {
   const pathname = usePathname();
@@ -41,6 +42,7 @@ const AppHeader = () => {
       </div>
       {/* Right Side Controls */}
       <div className="flex items-center gap-2">
+      <SearchForm/>
         <DesktopControls pathname={pathname} />
         <MobileControls pathname={pathname} />
       </div>

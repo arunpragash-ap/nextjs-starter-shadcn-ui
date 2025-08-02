@@ -3,7 +3,6 @@
 import { axiosAuth } from "@/lib/api";
 import { CreateOrUpdateOptionRequest, MinimalOption, Option } from "@/types/options.types";
 
-export interface CreateOrUpdateOptionResponse extends Option {}
 
 // ===== Service implementation =====
 export const OptionsService = {
@@ -13,8 +12,8 @@ export const OptionsService = {
    */
   async createOrUpdate(
     data: CreateOrUpdateOptionRequest
-  ): Promise<CreateOrUpdateOptionResponse> {
-    const res = await axiosAuth.post<CreateOrUpdateOptionResponse>("/options", data);
+  ): Promise<Option> {
+    const res = await axiosAuth.post<Option>("/options", data);
     return res.data;
   },
 

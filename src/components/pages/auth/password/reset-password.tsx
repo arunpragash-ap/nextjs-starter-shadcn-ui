@@ -39,7 +39,7 @@ export default function ResetPassword() {
 
     setVerifying(true);
     try {
-      await authService.verifyEmailWithCode({ email, code: otpCode });
+      await authService.verifyForgotOtp({ email, otp: otpCode });
       setIsOtpVerified(true);
       toast({
         title: "OTP verified!",
@@ -79,11 +79,10 @@ export default function ResetPassword() {
         if (nextInput) nextInput.selectionStart = nextInput.value.length;
       }, 0);
     }
-
     // Auto verify when all 6 digits are filled
     if (val && idx === 5) {
-      const otpCode = [...newValues.slice(0, 5), val].join("");
-      if (otpCode.length === 6 && !otpCode.includes("")) {
+      const otpCode = [...newValues.slice(0, 5), val].join("").trim();
+      if (otpCode.length === 6) {
         verifyOtp(otpCode);
       }
     }

@@ -23,6 +23,7 @@ class AuthService {
    * @returns Promise with verification data
    */
   async verifyEmailWithCode({ email, code }: { email: string; code: string; }) {
+    console.log(email, code)
     const res = await axiosPublic.post('/auth/email/verify-code', { email, code });
     return res.data;
   }
@@ -78,6 +79,11 @@ class AuthService {
    */
   async resetPassword({ email, otp, newPassword }: { email: string; otp: string; newPassword: string; }) {
     const res = await axiosPublic.post('/auth/reset-password', { email, otp, newPassword });
+    return res.data;
+  }
+
+  async verifyForgotOtp({ email, otp }: { email: string; otp: string; }) {
+    const res = await axiosPublic.post('/auth/forgot-password/verifyOtp', { email, otp });
     return res.data;
   }
 }
